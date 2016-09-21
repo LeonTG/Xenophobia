@@ -1,0 +1,11 @@
+name: ${project.name}
+main: ${project.groupId}.${project.artifactId}.Main
+version: ${project.version}
+author: LeonTG77
+description: All mobs are disguised as villagers.
+softdepend: [ProtocolLib]
+
+commands:
+  villagermobs:
+    description: Enable or Disable villager mobs.
+    aliases: [vmobs]
