@@ -28,7 +28,9 @@
 package com.leontg77.villagermobs;
 
 import com.leontg77.villagermobs.commands.VillagerMobsCommand;
-import com.leontg77.villagermobs.protocol.MobDisguiseAdapter;
+import com.leontg77.villagermobs.listeners.MobListener;
+import me.libraryaddict.disguise.disguisetypes.DisguiseType;
+import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -43,8 +45,10 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        MobDisguiseAdapter disguise = new MobDisguiseAdapter(this);
-        VillagerMobsCommand cmd = new VillagerMobsCommand(this, disguise);
+        MobDisguise mobDisguise = new MobDisguise(DisguiseType.VILLAGER, true, true);
+
+        MobListener listener = new MobListener(mobDisguise);
+        VillagerMobsCommand cmd = new VillagerMobsCommand(this, listener, mobDisguise);
 
         // register command.
         getCommand("villagermobs").setExecutor(cmd);

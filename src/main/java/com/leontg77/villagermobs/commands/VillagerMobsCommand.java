@@ -27,17 +27,23 @@
 
 package com.leontg77.villagermobs.commands;
 
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
 import com.google.common.collect.Lists;
 import com.leontg77.villagermobs.Main;
-import com.leontg77.villagermobs.protocol.MobDisguiseAdapter;
+import com.leontg77.villagermobs.listeners.MobListener;
+import me.libraryaddict.disguise.DisguiseAPI;
+import me.libraryaddict.disguise.disguisetypes.Disguise;
+import me.libraryaddict.disguise.disguisetypes.DisguiseType;
+import me.libraryaddict.disguise.disguisetypes.MobDisguise;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.HandlerList;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,14 +55,16 @@ import java.util.stream.Collectors;
 public class VillagerMobsCommand implements CommandExecutor, TabCompleter {
     private static final String PERMISSION = "villagermobs.manage";
 
-    private final MobDisguiseAdapter disguise;
+    private final MobListener listener;
     private final Main plugin;
 
-    private final ProtocolManager manager = ProtocolLibrary.getProtocolManager();
+    private final Disguise disguise;
 
-    public VillagerMobsCommand(Main plugin, MobDisguiseAdapter disguise) {
-        this.disguise = disguise;
+    public VillagerMobsCommand(Main plugin, MobListener listener, Disguise disguise) {
         this.plugin = plugin;
+
+        this.listener = listener;
+        this.disguise = disguise;
     }
 
     private boolean enabled = false;
@@ -90,7 +98,14 @@ public class VillagerMobsCommand implements CommandExecutor, TabCompleter {
             plugin.broadcast(Main.PREFIX + "Villager Mobs has been enabled.");
             enabled = true;
 
-            manager.addPacketListener(disguise);
+            Bukkit.getPluginManager().registerEvents(listener, plugin);
+
+            Bukkit.getWorlds()
+                    .forEach(world -> Arrays.stream(world.getLoadedChunks())
+                    .forEach(chunk -> Arrays.stream(chunk.getEntities())
+                            .filter(entity -> entity instanceof LivingEntity)
+                            .filter(living -> !DisguiseAPI.isDisguised(living) || DisguiseAPI.getDisguise(living).getType() != DisguiseType.VILLAGER)
+                            .forEach(living -> DisguiseAPI.disguiseToAll(living, disguise))));
             return true;
         }
 
@@ -108,7 +123,7 @@ public class VillagerMobsCommand implements CommandExecutor, TabCompleter {
             plugin.broadcast(Main.PREFIX + "Villager Mobs has been disabled.");
             enabled = false;
 
-            manager.removePacketListener(disguise);
+            HandlerList.unregisterAll(listener);
             return true;
         }
 
