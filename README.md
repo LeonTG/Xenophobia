@@ -6,9 +6,9 @@ All mobs are disguised as villagers. This plugin was made for Phobia S9
 
 **NOTE:** The following 2 plugins are REQUIRED to make this work
 
-[ProtocolLib](https://www.spigotmc.org/resources/protocollib.1997/download?version=69182)
+[**ProtocolLib**](https://www.spigotmc.org/resources/protocollib.1997/download?version=69182)
 
-[LibsDisguises](https://www.spigotmc.org/resources/libs-disguises.81/download?version=69816)
+[**LibsDisguises**](https://www.spigotmc.org/resources/libs-disguises.81/download?version=69816)
 
 ___
 
