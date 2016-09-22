@@ -4,6 +4,8 @@
 
 All mobs are disguised as villagers. This plugin was made for Phobia S9
 
+**NOTE:** The plugin "ProtocolLib" is required for this to work.
+
 ___
 
 **Commands:**
