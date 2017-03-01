@@ -7,7 +7,7 @@
     <groupId>com.leontg77</groupId>
     <artifactId>villagermobs</artifactId>
     <version>1.0</version>
-    <name>VillagerMobs</name>
+    <name>Xenophobia</name>
 
     <repositories>
         <repository>
@@ -47,7 +47,7 @@
         <dependency>
             <groupId>LibsDisguises</groupId>
             <artifactId>LibsDisguises</artifactId>
-            <version>9.0.7</version>
+            <version>8.6.8</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/LibsDisguises.jar</systemPath>
         </dependency>

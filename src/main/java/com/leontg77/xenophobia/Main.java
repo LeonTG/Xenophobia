@@ -1,6 +1,6 @@
 /*
- * Project: VillagerMobs
- * Class: com.leontg77.villagermobs.Main
+ * Project: xenophobia
+ * Class: com.leontg77.xenophobia.Main
  *
  * The MIT License (MIT)
  *
@@ -25,10 +25,10 @@
  * THE SOFTWARE.
  */
 
-package com.leontg77.villagermobs;
+package com.leontg77.xenophobia;
 
-import com.leontg77.villagermobs.commands.VillagerMobsCommand;
-import com.leontg77.villagermobs.listeners.MobListener;
+import com.leontg77.xenophobia.commands.XenophobiaCommand;
+import com.leontg77.xenophobia.listeners.MobListener;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import org.bukkit.Bukkit;
@@ -41,17 +41,21 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author LeonTG77
  */
 public class Main extends JavaPlugin {
-    public static final String PREFIX = "§aVillager Mobs §8» §7";
+    public static final String PREFIX = "§aXenophobia §8» §7";
 
     @Override
     public void onEnable() {
         MobDisguise mobDisguise = new MobDisguise(DisguiseType.VILLAGER, true, true);
 
+        mobDisguise.setKeepDisguiseOnPlayerDeath(false);
+        mobDisguise.setViewSelfDisguise(false);
+        mobDisguise.setHearSelfDisguise(false);
+
         MobListener listener = new MobListener(mobDisguise);
-        VillagerMobsCommand cmd = new VillagerMobsCommand(this, listener, mobDisguise);
+        XenophobiaCommand cmd = new XenophobiaCommand(this, listener, mobDisguise);
 
         // register command.
-        getCommand("villagermobs").setExecutor(cmd);
+        getCommand("xenophobia").setExecutor(cmd);
     }
 
     /**

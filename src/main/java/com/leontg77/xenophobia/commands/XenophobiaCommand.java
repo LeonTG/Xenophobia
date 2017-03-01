@@ -1,6 +1,6 @@
 /*
- * Project: VillagerMobs
- * Class: com.leontg77.villagermobs.commands.VillagerMobsCommand
+ * Project: Xenophobia
+ * Class: com.leontg77.xenophobia.commands.VillagerMobsCommand
  *
  * The MIT License (MIT)
  *
@@ -25,15 +25,13 @@
  * THE SOFTWARE.
  */
 
-package com.leontg77.villagermobs.commands;
+package com.leontg77.xenophobia.commands;
 
 import com.google.common.collect.Lists;
-import com.leontg77.villagermobs.Main;
-import com.leontg77.villagermobs.listeners.MobListener;
+import com.leontg77.xenophobia.Main;
+import com.leontg77.xenophobia.listeners.MobListener;
 import me.libraryaddict.disguise.DisguiseAPI;
 import me.libraryaddict.disguise.disguisetypes.Disguise;
-import me.libraryaddict.disguise.disguisetypes.DisguiseType;
-import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -42,25 +40,25 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.HandlerList;
+import org.bukkit.util.StringUtil;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * Villager Mobs command class.
+ * Xenophobia command class.
  *
  * @author LeonTG77
  */
-public class VillagerMobsCommand implements CommandExecutor, TabCompleter {
-    private static final String PERMISSION = "villagermobs.manage";
+public class XenophobiaCommand implements CommandExecutor, TabCompleter {
+    private static final String PERMISSION = "xenophobia.manage";
 
     private final MobListener listener;
     private final Main plugin;
 
     private final Disguise disguise;
 
-    public VillagerMobsCommand(Main plugin, MobListener listener, Disguise disguise) {
+    public XenophobiaCommand(Main plugin, MobListener listener, Disguise disguise) {
         this.plugin = plugin;
 
         this.listener = listener;
@@ -72,7 +70,7 @@ public class VillagerMobsCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(Main.PREFIX + "Usage: /villagermobs <info|enable|disable>");
+            sender.sendMessage(Main.PREFIX + "Usage: /xenophobia <info|enable|disable>");
             return true;
         }
 
@@ -91,11 +89,11 @@ public class VillagerMobsCommand implements CommandExecutor, TabCompleter {
             }
 
             if (enabled) {
-                sender.sendMessage(Main.PREFIX + "Villager Mobs is already enabled.");
+                sender.sendMessage(Main.PREFIX + "Xenophobia is already enabled.");
                 return true;
             }
 
-            plugin.broadcast(Main.PREFIX + "Villager Mobs has been enabled.");
+            plugin.broadcast(Main.PREFIX + "Xenophobia has been enabled.");
             enabled = true;
 
             Bukkit.getPluginManager().registerEvents(listener, plugin);
@@ -104,7 +102,7 @@ public class VillagerMobsCommand implements CommandExecutor, TabCompleter {
                     .forEach(world -> Arrays.stream(world.getLoadedChunks())
                     .forEach(chunk -> Arrays.stream(chunk.getEntities())
                             .filter(entity -> entity instanceof LivingEntity)
-                            .filter(living -> !DisguiseAPI.isDisguised(living) || DisguiseAPI.getDisguise(living).getType() != DisguiseType.VILLAGER)
+                            .filter(living -> !DisguiseAPI.isDisguised(living) || DisguiseAPI.getDisguise(living).getType() != disguise.getType())
                             .forEach(living -> DisguiseAPI.disguiseToAll(living, disguise))));
             return true;
         }
@@ -116,28 +114,27 @@ public class VillagerMobsCommand implements CommandExecutor, TabCompleter {
             }
 
             if (!enabled) {
-                sender.sendMessage(Main.PREFIX + "Villager Mobs is not enabled.");
+                sender.sendMessage(Main.PREFIX + "Xenophobia is not enabled.");
                 return true;
             }
 
-            plugin.broadcast(Main.PREFIX + "Villager Mobs has been disabled.");
+            plugin.broadcast(Main.PREFIX + "Xenophobia has been disabled.");
             enabled = false;
 
             HandlerList.unregisterAll(listener);
             return true;
         }
 
-        sender.sendMessage(Main.PREFIX + "Usage: /villagermobs <info|enable|disable>");
+        sender.sendMessage(Main.PREFIX + "Usage: /xenophobia <info|enable|disable>");
         return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-        List<String> toReturn = Lists.newArrayList();
         List<String> list = Lists.newArrayList();
 
         if (args.length != 1) {
-            return toReturn;
+            return list;
         }
 
         list.add("info");
@@ -147,13 +144,6 @@ public class VillagerMobsCommand implements CommandExecutor, TabCompleter {
             list.add("disable");
         }
 
-        // make sure to only tab complete what starts with what they
-        // typed or everything if they didn't type anything
-        toReturn.addAll(list
-                .stream()
-                .filter(str -> args[args.length - 1].isEmpty() || str.startsWith(args[args.length - 1].toLowerCase()))
-                .collect(Collectors.toList()));
-
-        return toReturn;
+        return StringUtil.copyPartialMatches(args[args.length - 1], list, Lists.newArrayList());
     }
 }

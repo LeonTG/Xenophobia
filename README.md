@@ -1,8 +1,8 @@
-# Villager Mobs
+# Xenophobia
 
 **Description:**
 
-All mobs are disguised as villagers. This plugin was made for Phobia S9
+All mobs are disguised as villagers. This plugin was made for Phobia S9 aka Xenophobia.
 
 ___
 
@@ -17,22 +17,22 @@ ___
 
 **Commands:**
 
-`/villagermobs info` - *View plugin information.*
+`/xenophobia info` - *View plugin information.*
 
-`/villagermobs enable` - *Enable the plugin features.*
+`/xenophobia enable` - *Enable the plugin features.*
 
-`/villagermobs disable` - *Disable the plugin features.*
+`/xenophobia disable` - *Disable the plugin features.*
 
-`/vmobs` - *Alias of `/villagermobs`.*
+`/xenop` - *Alias of `/xenophobia`.*
 
 **Permissions:**
 
-`villagermobs.manage` - *Permission to use* `/villagermobs`
+`xenophobia.manage` - *Permission to use* `/xenophobia`
 
 ___
 
-[Download](https://github.com/LeonTG77/VillagerMobs/releases)
+[Download](https://github.com/LeonTG77/Xenophobia/releases)
 
-[Source Code](https://github.com/LeonTG77/VillagerMobs)
+[Source Code](https://github.com/LeonTG77/Xenophobia)
 
 *This has been tested on the latest spigot 1.8.7 build.*

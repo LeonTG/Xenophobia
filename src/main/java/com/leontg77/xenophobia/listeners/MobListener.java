@@ -1,6 +1,6 @@
 /*
- * Project: VillagerMobs
- * Class: com.leontg77.villagermobs.listener.MobListener
+ * Project: Xenophobia
+ * Class: com.leontg77.xenophobia.listener.MobListener
  *
  * The MIT License (MIT)
  *
@@ -25,18 +25,21 @@
  * THE SOFTWARE.
  */
 
-package com.leontg77.villagermobs.listeners;
+package com.leontg77.xenophobia.listeners;
 
 import me.libraryaddict.disguise.DisguiseAPI;
 import me.libraryaddict.disguise.disguisetypes.Disguise;
-import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.ThrownPotion;
+import org.bukkit.entity.Witch;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.Arrays;
 
@@ -68,7 +71,17 @@ public class MobListener implements Listener {
     public void on(ChunkLoadEvent event) {
         Arrays.stream(event.getChunk().getEntities())
                 .filter(entity -> entity instanceof LivingEntity)
-                .filter(living -> !DisguiseAPI.isDisguised(living) || DisguiseAPI.getDisguise(living).getType() != DisguiseType.VILLAGER)
+                .filter(living -> !DisguiseAPI.isDisguised(living) || DisguiseAPI.getDisguise(living).getType() != disguise.getType())
                 .forEach(living -> DisguiseAPI.disguiseToAll(living, disguise));
+    }
+
+    @EventHandler
+    public void on(PotionSplashEvent event) {
+        ThrownPotion potion = event.getPotion();
+        ProjectileSource shooter = potion.getShooter();
+
+        if (shooter instanceof Witch) {
+            event.setCancelled(true);
+        }
     }
 }

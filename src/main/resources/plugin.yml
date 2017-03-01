@@ -6,6 +6,6 @@ description: All mobs are disguised as villagers.
 softdepend: [ProtocolLib]
 
 commands:
-  villagermobs:
-    description: Enable or Disable villager mobs.
-    aliases: [vmobs]
+  xenophobia:
+    description: Enable or disable the gamemode.
+    aliases: [xenop]
